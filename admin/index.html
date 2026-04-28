@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>共处 · Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.stat-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--hairline); font-family: var(--mono); font-size: 12px; }
+.stat-row.header { color: var(--smoke); border-bottom: 1px solid var(--smoke); }
+.big-num { font-family: var(--serif); font-size: 48px; font-weight: 300; }
+.stat-block { padding: 24px; border: 1px solid var(--hairline); margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="container" style="max-width: 720px;">
+<header class="topbar"><span>ADMIN · DASHBOARD</span><span id="last-update">—</span></header>
+<div id="auth" style="padding: 80px 0;">
+<div class="rarity" style="margin-bottom: 16px;">PASSWORD</div>
+<input id="pwd" type="password" style="width:100%; padding: 12px; border: 1px solid var(--ink); background: transparent; font-family: var(--mono); font-size: 14px;">
+<button class="btn" id="btn-login" style="margin-top: 16px;">进入</button>
+</div>
+<main id="dash" style="display:none;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 32px;">
+<div class="stat-block"><div class="rarity">总测试数</div><div class="big-num" id="total-sessions">—</div></div>
+<div class="stat-block"><div class="rarity">今日测试</div><div class="big-num" id="today-sessions">—</div></div>
+<div class="stat-block"><div class="rarity">独立用户</div><div class="big-num" id="total-users">—</div></div>
+</div>
+<h2 class="rarity">主卡分布</h2><div id="main-stats" style="margin-bottom: 32px;"></div>
+<h2 class="rarity">隐藏卡触发</h2><div id="hidden-stats" style="margin-bottom: 32px;"></div>
+</main>
+</div>
+<script type="module">
+import { supabase, isConfigured } from '../assets/js/supabase-client.js';
+const ADMIN_PASS = 'Cx9!mK2pQ7vN4rL8';
+document.getElementById('btn-login').addEventListener('click', () => { const pwd = document.getElementById('pwd').value; if (pwd !== ADMIN_PASS) { alert('错'); return; } document.getElementById('auth').style.display = 'none'; document.getElementById('dash').style.display = 'block'; loadData(); });
+async function loadData() {
+  if (!isConfigured) { document.getElementById('total-sessions').textContent = 'mock'; return; }
+  const { count: totalSessions } = await supabase.from('sessions').select('*', { count: 'exact', head: true });
+  document.getElementById('total-sessions').textContent = totalSessions || 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const { count: todaySessions } = await supabase.from('sessions').select('*', { count: 'exact', head: true }).gte('started_at', today);
+  document.getElementById('today-sessions').textContent = todaySessions || 0;
+  const { count: totalUsers } = await supabase.from('users').select('*', { count: 'exact', head: true });
+  document.getElementById('total-users').textContent = totalUsers || 0;
+  const { data: stats } = await supabase.from('card_stats').select('*').order('total_count', { ascending: false });
+  const HIDDEN = ['META','NULL','REPEAT','LOOP','SKIP','FAST','SLOW','MIRROR_NULL','ZERO','GHOST_JUE','FGHT_MIRR','COEX_HUI','DECT_NULL','EVEN'];
+  const mainStats = stats.filter(s => !HIDDEN.includes(s.card_id));
+  const hiddenStats = stats.filter(s => HIDDEN.includes(s.card_id));
+  const renderRows = arr => arr.map(s => '<div class="stat-row"><span>' + s.card_id + ' · ' + (s.card_name || '') + '</span><span>' + s.total_count + '</span><span>' + s.today_count + '</span></div>').join('');
+  document.getElementById('main-stats').innerHTML = '<div class="stat-row header"><span>卡</span><span>累计</span><span>今日</span></div>' + renderRows(mainStats);
+  document.getElementById('hidden-stats').innerHTML = '<div class="stat-row header"><span>隐藏卡</span><span>累计</span><span>今日</span></div>' + renderRows(hiddenStats);
+  document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+  supabase.channel('admin').on('postgres_changes', { event: '*', schema: 'public', table: 'sessions' }, () => loadData()).on('postgres_changes', { event: '*', schema: 'public', table: 'card_stats' }, () => loadData()).subscribe();
+}
+</script>
+</body>
+</html>
