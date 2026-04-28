@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>共处 · 卡册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="container">
+
+  <header class="topbar">
+    <span>COLLECTION</span>
+    <span>DM LOGIC</span>
+  </header>
+
+  <h1 class="title-zh" style="font-size: 40px; margin-top: 32px;">卡册</h1>
+  <div class="title-en">Your Collection</div>
+
+  <div class="rarity" id="progress-text" style="margin-bottom: 32px;">解锁中…</div>
+
+  <div class="hairline" style="margin-left: 0; width: 100%;"></div>
+
+  <h2 class="rarity" style="margin: 32px 0 16px;">21 主卡</h2>
+  <div class="collection-grid" id="main-grid"></div>
+
+  <h2 class="rarity" style="margin: 48px 0 16px;">14 隐藏卡</h2>
+  <div class="collection-grid" id="hidden-grid"></div>
+
+  <div style="margin-top: 48px; display: flex; gap: 24px; justify-content: center;">
+    <a href="quiz.html" class="btn">再做一次 →</a>
+    <a href="index.html" class="btn-ghost">回首页</a>
+  </div>
+
+  <footer class="byline">
+    <span>共处 · COEXIST</span>
+    <span>dmlogic.ca</span>
+  </footer>
+
+</div>
+
+<script type="module">
+import { getOrCreateUser } from './assets/js/fingerprint.js';
+
+async function init() {
+  const user = await getOrCreateUser();
+  const cardData = await fetch('./assets/data/cards.json').then(r => r.json());
+
+  const collected = user.cards_collected || [];
+  const hidden = user.hidden_cards_unlocked || [];
+
+  const allMain = Object.keys(cardData.main);
+  const allHidden = Object.keys(cardData.hidden);
+
+  document.getElementById('progress-text').textContent =
+    `${collected.length + hidden.length} / ${allMain.length + allHidden.length}`;
+
+  document.getElementById('main-grid').innerHTML = allMain.map(id => {
+    const isUnlocked = collected.includes(id);
+    const card = cardData.main[id];
+    return `
+      <div class="card-slot ${isUnlocked ? 'unlocked' : 'locked'}">
+        <div class="card-id">${id}</div>
+        <div class="card-name">${isUnlocked ? card.name : '—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('hidden-grid').innerHTML = allHidden.map(id => {
+    const isUnlocked = hidden.includes(id);
+    const card = cardData.hidden[id];
+    return `
+      <div class="card-slot ${isUnlocked ? 'unlocked' : 'locked'}">
+        <div class="card-id">${id}</div>
+        <div class="card-name">${isUnlocked ? card.name : '???'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+init();
+</script>
+
+</body>
+</html>

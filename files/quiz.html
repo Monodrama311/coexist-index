@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>共处 · 测试中</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="container">
+
+  <header class="topbar">
+    <span id="q-counter">00 / 25</span>
+    <span id="q-school">—</span>
+  </header>
+
+  <div class="progress">
+    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+  </div>
+
+  <main id="quiz-main">
+    <div id="loading" style="text-align: center; color: var(--smoke); padding: 80px 0;">
+      载入中…
+    </div>
+  </main>
+
+  <footer class="byline">
+    <span>共处 · COEXIST</span>
+    <span>dmlogic.ca</span>
+  </footer>
+
+</div>
+
+<script type="module">
+import { getOrCreateUser } from './assets/js/fingerprint.js';
+import { QuizEngine } from './assets/js/quiz-engine.js';
+
+const root = document.getElementById('quiz-main');
+const counter = document.getElementById('q-counter');
+const schoolEl = document.getElementById('q-school');
+const progressFill = document.getElementById('progress-fill');
+
+let engine = null;
+let questionStartTime = null;
+let switchCount = 0;
+let selected = new Set();
+
+async function init() {
+  try {
+    const user = await getOrCreateUser();
+    const data = await fetch('./assets/data/questions.json').then(r => r.json());
+    engine = new QuizEngine(user, data);
+    await engine.start();
+    renderQuestion();
+  } catch (e) {
+    root.innerHTML = `<p style="color: var(--smoke);">载入失败:${e.message}</p>`;
+    console.error(e);
+  }
+}
+
+function renderQuestion() {
+  const q = engine.getCurrent();
+  if (!q) return finishQuiz();
+
+  selected = new Set();
+  switchCount = 0;
+  questionStartTime = Date.now();
+
+  const total = engine.questions.length;
+  const cur = engine.currentIndex + 1;
+  counter.textContent = `${String(cur).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+  schoolEl.textContent = q.school || '';
+  progressFill.style.width = `${(engine.currentIndex / total) * 100}%`;
+
+  const optionsHtml = q.options.map((opt, i) => `
+    <button class="option" data-id="${opt.id}">
+      <span class="checkmark"></span>
+      <span class="opt-text">${opt.text}</span>
+    </button>
+  `).join('');
+
+  root.innerHTML = `
+    <div class="question-meta">
+      <span>Q${q.id.replace('Q', '').padStart(2, '0')}</span>
+      <span>${q.scene}</span>
+    </div>
+    <div class="question-story">${q.story}</div>
+    <div class="question-hint">可多选,可不选</div>
+    <div class="options" id="options">${optionsHtml}</div>
+    <div class="action-row">
+      ${q.skippable ? '<button class="btn-ghost" id="btn-skip">跳过</button>' : '<span></span>'}
+      <button class="btn" id="btn-next">${engine.isLast() ? '看结果 →' : '下一题 →'}</button>
+    </div>
+  `;
+
+  document.querySelectorAll('.option').forEach(btn => {
+    btn.addEventListener('click', () => toggleOption(btn));
+  });
+  document.getElementById('btn-next').addEventListener('click', submit);
+  if (q.skippable) {
+    document.getElementById('btn-skip').addEventListener('click', skip);
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function toggleOption(btn) {
+  const id = btn.dataset.id;
+  if (selected.has(id)) {
+    selected.delete(id);
+    btn.classList.remove('selected');
+  } else {
+    selected.add(id);
+    btn.classList.add('selected');
+  }
+  switchCount++;
+}
+
+async function submit() {
+  const dwell = Date.now() - questionStartTime;
+  await engine.submit(Array.from(selected), {
+    dwell_ms: dwell,
+    switch_count: switchCount
+  });
+  if (engine.currentIndex >= engine.questions.length) {
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+}
+
+async function skip() {
+  engine.skip();
+  if (engine.currentIndex >= engine.questions.length) {
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+}
+
+async function finishQuiz() {
+  progressFill.style.width = '100%';
+  root.innerHTML = `<div style="text-align: center; color: var(--smoke); padding: 80px 0;">生成结果中…</div>`;
+  const result = await engine.finish();
+  // 把结果存到 sessionStorage,跳转到 result.html
+  sessionStorage.setItem('coexist_result', JSON.stringify(result));
+  sessionStorage.setItem('coexist_user_id', engine.user.id);
+  location.href = 'result.html';
+}
+
+init();
+</script>
+
+</body>
+</html>

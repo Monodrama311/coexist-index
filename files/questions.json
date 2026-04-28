@@ -1,0 +1,432 @@
+{
+  "version": "v1-skeleton",
+  "note": "题面文案为占位,等真实写手填。选项 scoring 已配,可直接驱动评分引擎。",
+  "questions": [
+    {
+      "id": "Q01",
+      "school": "新世相",
+      "scene": "冰箱第二层",
+      "story": "我打开冰箱想拿一瓶水。第二层是空的。已经空了大概有十一天。\n\n这十一天里,你大概是哪种状态?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "想着「该买点东西塞进去了」,但没去", "scoring": { "DECT.起": 1, "GHST.用": 1 } },
+        { "id": "b", "text": "已经想好要放什么,只是还没动", "scoring": { "MIRR.用": 2 } },
+        { "id": "c", "text": "故意让它空着,空着比塞满好", "scoring": { "PHIL.用": 1, "COEX": 2 } },
+        { "id": "d", "text": "没注意它空了,直到你刚才提我", "scoring": { "GHST.用": 2 } },
+        { "id": "e", "text": "上周买了一瓶气泡水专门放进去,现在喝完了", "scoring": { "DECT.用": 1, "COEX": 1 } },
+        { "id": "f", "text": "想到这十一天里没人来过我家", "scoring": { "GHST.困": 2 } }
+      ]
+    },
+    {
+      "id": "Q02",
+      "school": "公路商店",
+      "scene": "快递柜",
+      "story": "快递柜的那一格里,有一个不是我下的单。已经在那里第三天了,我每次扫码取自己那件的时候都会瞥到。\n\n下一次去取快递时你会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "顺手把那个也带上去,放在邻居门口", "scoring": { "DECT.用": 2 } },
+        { "id": "b", "text": "拍一张照片发到业主群问一句", "scoring": { "MIRR.用": 2 } },
+        { "id": "c", "text": "不管它,反正不是我的事", "scoring": { "GHST.用": 2 } },
+        { "id": "d", "text": "跟驿站说一声让他们处理", "scoring": { "FGHT.起": 1, "MIRR.用": 1 } },
+        { "id": "e", "text": "心里默默猜了一下是哪一户的", "scoring": { "MIRR.困": 2 } },
+        { "id": "f", "text": "想到自己上次有个快递被人拿错了,没人还", "scoring": { "FGHT.困": 1, "GHST.出": 1 } }
+      ]
+    },
+    {
+      "id": "Q03",
+      "school": "不相及",
+      "scene": "电梯里那个按钮",
+      "story": "电梯里只有我和另一个人。ta 已经按过 12 楼了。从 1 楼到 12 楼,ta 又按了 4 次 12 楼。\n\n我接下来会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "也跟着按一下 12 楼,看看会发生什么", "scoring": { "FGHT.起": 2 } },
+        { "id": "b", "text": "假装看手机,但其实在数 ta 一共按了几次", "scoring": { "MIRR.用": 2 } },
+        { "id": "c", "text": "心里替 ta 把按钮按「灭」", "scoring": { "PHIL.用": 2 } },
+        { "id": "d", "text": "在 5 楼提前下电梯走楼梯", "scoring": { "GHST.出": 2 } },
+        { "id": "e", "text": "回家后跟人讲今天遇到的这件小事", "scoring": { "PHIL.出": 1, "DECT.用": 1 } },
+        { "id": "f", "text": "觉得 ta 一定在等什么人,而那个人没来", "scoring": { "MIRR.困": 1, "COEX": 1 } }
+      ]
+    },
+    {
+      "id": "Q04",
+      "school": "GQ Lab",
+      "scene": "外卖备注栏",
+      "story": "我刚刚下了一份外卖。备注栏写到一半我停住了。光标在那闪了大概 8 秒。\n\n那 8 秒里,我在删什么?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "「不要香菜」后面那句「谢谢」", "scoring": { "DECT.用": 2 } },
+        { "id": "b", "text": "「放门口就好」后面那句「不用打电话」", "scoring": { "GHST.用": 2 } },
+        { "id": "c", "text": "「请少糖」后面那句「我胃不太好」", "scoring": { "DECT.困": 1, "MIRR.用": 1 } },
+        { "id": "d", "text": "写到一半的「麻烦您…」整句删掉,改成空白", "scoring": { "MIRR.出": 2 } },
+        { "id": "e", "text": "其实什么都没删,只是看着备注栏发呆", "scoring": { "COEX": 2 } },
+        { "id": "f", "text": "删完之后又重新打了一遍一模一样的话", "scoring": { "MIRR.困": 1, "DECT.困": 1 } }
+      ]
+    },
+    {
+      "id": "Q05",
+      "school": "蹦迪班长",
+      "scene": "超市第三个货架",
+      "story": "我推着购物车走到第三个货架,停了下来。我并不打算买这一排的任何东西。但我在这站了大概 90 秒。\n\n这 90 秒我大概在干什么?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "在心里给货架上的东西排顺序:贵的、好看的、我妈会买的", "scoring": { "MIRR.用": 2 } },
+        { "id": "b", "text": "拿起一盒看了一眼配料表,又放回去", "scoring": { "PHIL.用": 2 } },
+        { "id": "c", "text": "想起来上次跟谁一起来过这一排", "scoring": { "DECT.困": 1, "GHST.困": 1 } },
+        { "id": "d", "text": "刷了一下手机,没刷出什么,继续往前推", "scoring": { "GHST.用": 2 } },
+        { "id": "e", "text": "把购物车里的某一样悄悄放了回去", "scoring": { "FGHT.出": 2 } },
+        { "id": "f", "text": "突然觉得逛超市这件事好奇怪,然后继续逛", "scoring": { "COEX": 1, "PHIL.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q06",
+      "school": "新世相",
+      "scene": "奶茶店少糖",
+      "story": "我点了一杯奶茶。点的时候我说「少糖」。这是我这周第三次说「少糖」。但我其实想喝七分糖。\n\n下一次,我会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "还是说少糖,我已经说习惯了", "scoring": { "DECT.困": 2 } },
+        { "id": "b", "text": "改口说七分,说之前会先咳嗽一下", "scoring": { "MIRR.出": 2 } },
+        { "id": "c", "text": "干脆不点了,改买一瓶矿泉水", "scoring": { "GHST.出": 2 } },
+        { "id": "d", "text": "说全糖,故意的", "scoring": { "FGHT.起": 2 } },
+        { "id": "e", "text": "在小程序里下单,这样不用开口", "scoring": { "GHST.用": 1, "MIRR.用": 1 } },
+        { "id": "f", "text": "先观察店员是不是同一个人,再决定", "scoring": { "MIRR.用": 1, "DECT.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q07",
+      "school": "公路商店",
+      "scene": "微信对话框",
+      "story": "我有一个对话框,最后一条消息是对方发的。已经停在那 19 天了。我每天会划到那条对话上,但不会点开。\n\n第 20 天我会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "点开,然后回一句「嗯」", "scoring": { "DECT.出": 2 } },
+        { "id": "b", "text": "继续不点开,但今天会把它置顶", "scoring": { "MIRR.困": 2 } },
+        { "id": "c", "text": "把这个对话从消息列表里删掉,但不删好友", "scoring": { "GHST.出": 2 } },
+        { "id": "d", "text": "拉黑", "scoring": { "FGHT.出": 2 } },
+        { "id": "e", "text": "截图发给另一个朋友问「你看这话啥意思」", "scoring": { "MIRR.出": 1, "DECT.用": 1 } },
+        { "id": "f", "text": "写一段话准备发,写完没发,存进备忘录", "scoring": { "PHIL.困": 2 } }
+      ]
+    },
+    {
+      "id": "Q08",
+      "school": "不相及",
+      "scene": "地铁第三节车厢",
+      "story": "我每天上班坐 8 号线,固定上第三节车厢。今天我站了一站,发现对面那个人,跟我同一个地方上车,同一个地方下车,已经第六次了。\n\n我下次会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "换一节车厢", "scoring": { "GHST.出": 2 } },
+        { "id": "b", "text": "站到 ta 旁边一点", "scoring": { "FGHT.起": 2 } },
+        { "id": "c", "text": "还是同样位置,但开始观察 ta 看什么书/手机壳", "scoring": { "MIRR.用": 2 } },
+        { "id": "d", "text": "默认我俩不会发生任何关系,继续看自己的", "scoring": { "COEX": 2 } },
+        { "id": "e", "text": "心里给 ta 编了一段人生", "scoring": { "PHIL.用": 2 } },
+        { "id": "f", "text": "想了想自己今天穿成这样会不会被记住", "scoring": { "DECT.用": 1, "MIRR.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q09",
+      "school": "GQ Lab",
+      "scene": "玄关那双鞋",
+      "story": "玄关有两双鞋。一双是我的,一双不是我的。两双鞋的鞋头方向不一样。\n\n这件事你已经注意到几天了?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "当天就注意到,但没动", "scoring": { "MIRR.起": 2 } },
+        { "id": "b", "text": "第二天注意到,把不是我的那双调正了", "scoring": { "DECT.用": 2 } },
+        { "id": "c", "text": "一直没注意,你刚提才意识到", "scoring": { "GHST.用": 2 } },
+        { "id": "d", "text": "注意到了,故意不调,看 ta 多久会发现", "scoring": { "FGHT.用": 2 } },
+        { "id": "e", "text": "把自己那双也歪过去,跟 ta 一致", "scoring": { "DECT.困": 1, "COEX": 1 } },
+        { "id": "f", "text": "那双鞋已经在那放了三周了", "scoring": { "GHST.出": 1, "PHIL.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q10",
+      "school": "蹦迪班长",
+      "scene": "便利店关东煮",
+      "story": "便利店的关东煮窗口前面只有我一个人。店员问我要哪个。我盯着那一排看了大概 14 秒。\n\n那 14 秒我:",
+      "multi_select": true,
+      "skippable": true,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "在心里挑出对方会喜欢的那一个,然后买了那个", "scoring": { "DECT.用": 2 } },
+        { "id": "b", "text": "挑了我自己最想吃的那一个", "scoring": { "FGHT.起": 2 } },
+        { "id": "c", "text": "一次买了 4 个,告诉自己有的是给别人的", "scoring": { "DECT.困": 2 } },
+        { "id": "d", "text": "放弃,转身去拿了一瓶水", "scoring": { "GHST.出": 2 } },
+        { "id": "e", "text": "问店员:你最常被买的是哪个", "scoring": { "MIRR.起": 2 } },
+        { "id": "f", "text": "拿出手机搜了一下「萝卜热量」", "scoring": { "PHIL.用": 2 } }
+      ]
+    },
+    {
+      "id": "Q11",
+      "school": "公路商店",
+      "scene": "搜索栏第一行",
+      "story": "我打开淘宝,搜索栏自动跳出最近搜过的关键词。第一行是一个我并不打算再买的东西。\n\n我会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "把那条搜索记录单独删掉", "scoring": { "MIRR.出": 2 } },
+        { "id": "b", "text": "一键清空所有搜索历史", "scoring": { "FGHT.出": 2 } },
+        { "id": "c", "text": "不动它,反正只有我自己看得到", "scoring": { "COEX": 1, "PHIL.用": 1 } },
+        { "id": "d", "text": "重新搜一次,这样它就还在第一行", "scoring": { "MIRR.困": 1, "DECT.困": 1 } },
+        { "id": "e", "text": "截图,存到一个谁也看不到的相册里", "scoring": { "PHIL.困": 2 } },
+        { "id": "f", "text": "关掉淘宝去刷别的", "scoring": { "GHST.用": 2 } }
+      ]
+    },
+    {
+      "id": "Q12",
+      "school": "新世相",
+      "scene": "出租车后座 / 半场",
+      "story": "出租车后座,我在右边。司机问要走哪条路。我说「您看着来」。\n\n我说这句「您看着来」的真实情况是:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "is_midpoint": true,
+      "options": [
+        { "id": "a", "text": "我真的没意见,走哪都行", "scoring": { "COEX": 2 } },
+        { "id": "b", "text": "我有意见,但说出来很麻烦", "scoring": { "DECT.困": 2 } },
+        { "id": "c", "text": "我已经默默在地图上对照,如果走错我会提醒", "scoring": { "MIRR.用": 2 } },
+        { "id": "d", "text": "我知道走哪条最快,但我喜欢测试司机会不会绕", "scoring": { "FGHT.用": 2 } },
+        { "id": "e", "text": "我其实没认真听他问什么", "scoring": { "GHST.用": 2 } },
+        { "id": "f", "text": "我只是想让这趟车快点开", "scoring": { "GHST.困": 1, "PHIL.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q13",
+      "school": "不相及",
+      "scene": "阳台那把椅子",
+      "story": "我家阳台上有两把椅子。一把每天有人坐,一把已经四个月没坐过了。但每周打扫的时候我还是会擦那一把。\n\n擦那把椅子的时候我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": true,
+      "options": [
+        { "id": "a", "text": "顺手而已,跟擦桌子一样", "scoring": { "COEX": 2 } },
+        { "id": "b", "text": "心里默念「留着以防万一」", "scoring": { "DECT.用": 2 } },
+        { "id": "c", "text": "想过要不要把它收起来,想了三次,没收", "scoring": { "MIRR.困": 2 } },
+        { "id": "d", "text": "想到上一次有人坐这是什么时候", "scoring": { "GHST.困": 1, "PHIL.困": 1 } },
+        { "id": "e", "text": "突然觉得擦它有点蠢,但下周还会擦", "scoring": { "PHIL.用": 2 } },
+        { "id": "f", "text": "哪天会换一把新的,这把搬走", "scoring": { "FGHT.出": 1, "PHIL.出": 1 } }
+      ]
+    },
+    {
+      "id": "Q14",
+      "school": "GQ Lab",
+      "scene": "相册第 4127 张",
+      "story": "我手机相册一共 12,438 张照片。其中第 4127 张,我已经划过去三次,又划回来三次。\n\n第四次的时候,我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "长按删除", "scoring": { "FGHT.出": 2 } },
+        { "id": "b", "text": "收藏到一个叫「杂」的相册里", "scoring": { "GHST.出": 1, "MIRR.用": 1 } },
+        { "id": "c", "text": "设成壁纸三天再换回来", "scoring": { "DECT.困": 2 } },
+        { "id": "d", "text": "转发给自己的微信文件传输助手", "scoring": { "MIRR.困": 2 } },
+        { "id": "e", "text": "不删不存,继续划过去", "scoring": { "COEX": 1, "PHIL.用": 1 } },
+        { "id": "f", "text": "顺手把那一整段时间的照片批量删了", "scoring": { "FGHT.出": 3 } }
+      ]
+    },
+    {
+      "id": "Q15",
+      "school": "蹦迪班长",
+      "scene": "电梯到 -1",
+      "story": "我下楼,电梯按钮 1 和 -1 我都按过。我其实只想去 1 楼。-1 是上次另一个人按的,我懒得去掉。电梯先停 -1。\n\n门开的瞬间我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "出去,绕一圈再上来", "scoring": { "PHIL.用": 2 } },
+        { "id": "b", "text": "不出去,等关门", "scoring": { "GHST.用": 2 } },
+        { "id": "c", "text": "出去,反正也没差", "scoring": { "DECT.用": 1, "COEX": 1 } },
+        { "id": "d", "text": "出去之前在心里骂了一句那个按 -1 的人", "scoring": { "FGHT.起": 2 } },
+        { "id": "e", "text": "注意到 -1 的灯还亮着,把它再按一次让它灭", "scoring": { "MIRR.出": 2 } },
+        { "id": "f", "text": "出去后改走楼梯", "scoring": { "FGHT.出": 2 } }
+      ]
+    },
+    {
+      "id": "Q16",
+      "school": "新世相",
+      "scene": "药盒最后一格",
+      "story": "我家里那盒药,最后一格还剩一颗。已经剩三个月了。我没扔,也没补。\n\n这一颗的状态是:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "我记得它,但忘了它治什么", "scoring": { "GHST.困": 2 } },
+        { "id": "b", "text": "它是给别人备的,那个人不来了", "scoring": { "DECT.出": 1, "GHST.困": 1 } },
+        { "id": "c", "text": "我自己留着,以防哪天用得上", "scoring": { "PHIL.用": 1, "MIRR.用": 1 } },
+        { "id": "d", "text": "偶尔打开盒子看一眼又关上", "scoring": { "MIRR.困": 2 } },
+        { "id": "e", "text": "已经过期了,我知道,但不打算扔", "scoring": { "PHIL.困": 1, "COEX": 1 } },
+        { "id": "f", "text": "哪天会一起扔了,连盒子", "scoring": { "FGHT.出": 2 } }
+      ]
+    },
+    {
+      "id": "Q17",
+      "school": "公路商店",
+      "scene": "便利店收银员 / META 触发",
+      "story": "楼下 7-11 那个收银员我已经见过 200 多次了。今天 ta 第一次跟我说了一句不是「扫码」「谢谢」「欢迎光临」的话。\n\nta 说的是「今天买的不一样啊」。我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "笑了一下,说「嗯,换换口味」", "scoring": { "DECT.用": 2 } },
+        { "id": "b", "text": "愣住了,半秒没接话", "scoring": { "GHST.困": 1, "MIRR.用": 1 } },
+        { "id": "c", "text": "解释了一下为什么换", "scoring": { "DECT.困": 2 } },
+        { "id": "d", "text": "心里在想 ta 是不是每个人都这么说", "scoring": { "MIRR.困": 2 }, "trigger": "META" },
+        { "id": "e", "text": "觉得被注意到了,有点不舒服", "scoring": { "GHST.用": 1, "FGHT.起": 1 } },
+        { "id": "f", "text": "第二天换了一家便利店去", "scoring": { "GHST.出": 1, "FGHT.出": 1 } }
+      ]
+    },
+    {
+      "id": "Q18",
+      "school": "不相及",
+      "scene": "外卖放门口",
+      "story": "外卖小哥发消息说「放门口了」。我打开门的那一秒。\n\n那一秒我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "探头看了下走廊有没有人", "scoring": { "MIRR.用": 2 } },
+        { "id": "b", "text": "直接弯腰拿,迅速关门", "scoring": { "GHST.用": 2 } },
+        { "id": "c", "text": "站着多看了一眼那个袋子", "scoring": { "PHIL.用": 2 } },
+        { "id": "d", "text": "跟正好路过的邻居点头微笑了一下", "scoring": { "DECT.用": 2 } },
+        { "id": "e", "text": "顺手把邻居门口的快递也整理了一下", "scoring": { "DECT.困": 1, "PHIL.用": 1 } },
+        { "id": "f", "text": "小哥还在走廊那头,我等他走远再开门", "scoring": { "GHST.困": 2 } }
+      ]
+    },
+    {
+      "id": "Q19",
+      "school": "GQ Lab",
+      "scene": "过期的酸奶",
+      "story": "冰箱里有一盒酸奶,过期 6 天了。是我自己买的。\n\n我会:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": true,
+      "options": [
+        { "id": "a", "text": "现在就扔", "scoring": { "FGHT.出": 2 } },
+        { "id": "b", "text": "闻一下,没坏就喝了", "scoring": { "PHIL.困": 2 } },
+        { "id": "c", "text": "继续放着,下周一起扔", "scoring": { "GHST.出": 1, "MIRR.用": 1 } },
+        { "id": "d", "text": "想了一下当时为什么买这盒,然后扔", "scoring": { "MIRR.出": 1, "PHIL.用": 1 } },
+        { "id": "e", "text": "拍一张照,发到自己的备忘录,然后扔", "scoring": { "PHIL.出": 2 } },
+        { "id": "f", "text": "让它继续在那放着,反正不影响别的", "scoring": { "COEX": 2 } }
+      ]
+    },
+    {
+      "id": "Q20",
+      "school": "蹦迪班长",
+      "scene": "保安那一句",
+      "story": "楼下保安今天对我说了一句「您回来了」。这是 ta 第一次跟我说话不是「出示一下证件」。\n\n我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "也回一句「回来了」,微笑", "scoring": { "DECT.用": 1, "COEX": 1 } },
+        { "id": "b", "text": "嗯了一声,继续走", "scoring": { "GHST.用": 2 } },
+        { "id": "c", "text": "多说了一句「今天天不错」", "scoring": { "DECT.困": 1, "PHIL.用": 1 } },
+        { "id": "d", "text": "心里想 ta 是不是认错人了", "scoring": { "MIRR.困": 2 } },
+        { "id": "e", "text": "装没听见", "scoring": { "FGHT.用": 2 } },
+        { "id": "f", "text": "第二天故意从另一个门进", "scoring": { "GHST.出": 2 } }
+      ]
+    },
+    {
+      "id": "Q21",
+      "school": "新世相",
+      "scene": "微信运动第一名",
+      "story": "我微信运动今天第一名是一个我已经一年没说过话的人。21,948 步。\n\n我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": true,
+      "options": [
+        { "id": "a", "text": "给那一步点了赞", "scoring": { "DECT.困": 2 } },
+        { "id": "b", "text": "没点赞,但点开了 ta 的朋友圈", "scoring": { "MIRR.困": 2 } },
+        { "id": "c", "text": "点开发现 ta 设置了三天可见,我看了一会三条", "scoring": { "GHST.困": 1, "MIRR.困": 1 } },
+        { "id": "d", "text": "关掉,继续刷别的", "scoring": { "GHST.用": 2 } },
+        { "id": "e", "text": "把微信运动关了", "scoring": { "FGHT.出": 2 } },
+        { "id": "f", "text": "截图存进一个叫「无关紧要」的相册", "scoring": { "PHIL.困": 1, "MIRR.困": 1 } }
+      ]
+    },
+    {
+      "id": "Q22",
+      "school": "公路商店",
+      "scene": "关东煮半价",
+      "story": "便利店关门前 10 分钟,关东煮窗口贴了一张「半价」。我刚下班路过。我其实不饿。\n\n我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "买一个,反正便宜", "scoring": { "PHIL.用": 2 } },
+        { "id": "b", "text": "全部打包,放冰箱", "scoring": { "DECT.困": 1, "FGHT.用": 1 } },
+        { "id": "c", "text": "不买,觉得这种时候买有点丢人", "scoring": { "GHST.用": 2 } },
+        { "id": "d", "text": "进去站一会,看别人买什么", "scoring": { "MIRR.用": 2 } },
+        { "id": "e", "text": "拍了一张照片发朋友圈,配一句「打折人生」", "scoring": { "PHIL.出": 2 } },
+        { "id": "f", "text": "突然意识到自己上一次饿是什么时候", "scoring": { "PHIL.困": 1, "COEX": 1 } }
+      ]
+    },
+    {
+      "id": "Q23",
+      "school": "GQ Lab",
+      "scene": "玄关感应灯",
+      "story": "我家玄关有一盏感应灯,只要有人进来就会亮 30 秒。今天晚上 23:47,它无缘无故亮了一下。\n\n那一刻我:",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "立刻起来去看", "scoring": { "FGHT.起": 2 } },
+        { "id": "b", "text": "不动,听了听,没声音就算了", "scoring": { "GHST.用": 2 } },
+        { "id": "c", "text": "知道是猫/楼道风/感应器抽风,继续看剧", "scoring": { "COEX": 2 } },
+        { "id": "d", "text": "心里还是默默数到 30,数完才放心", "scoring": { "MIRR.困": 2 } },
+        { "id": "e", "text": "想到这盏灯上一次亮是因为谁", "scoring": { "PHIL.困": 1, "GHST.困": 1 } },
+        { "id": "f", "text": "第二天把灯的感应灵敏度调低了", "scoring": { "FGHT.出": 1, "MIRR.出": 1 } }
+      ]
+    },
+    {
+      "id": "Q24",
+      "school": "不相及",
+      "scene": "共享单车没电 / LOOP 触发",
+      "story": "倒数第二题。\n\n你做完这测试,大概率会做什么?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "截图发朋友圈,配文「太准了」", "scoring": { "MIRR.困": 2 } },
+        { "id": "b", "text": "发到我和闺蜜群,等她分析", "scoring": { "DECT.起": 2 } },
+        { "id": "c", "text": "默默看完,关掉,不发", "scoring": { "GHST.起": 2 } },
+        { "id": "d", "text": "我不发。我去把这测试再做一遍。", "scoring": {}, "trigger": "LOOP" },
+        { "id": "e", "text": "我会发,但是发了以后我会盯着看谁点赞", "scoring": { "MIRR.困": 2, "DECT.用": 1 } },
+        { "id": "f", "text": "我会把这测试推给一个我觉得有问题的朋友", "scoring": { "DECT.用": 2, "FGHT.用": 1 } }
+      ]
+    },
+    {
+      "id": "Q25",
+      "school": "新世相",
+      "scene": "回家路上不想上楼 / 收尾",
+      "story": "最后一题。\n\n假设这个测试的结果是——你不是任何一种人格。你只是累了。\n\n你的反应?",
+      "multi_select": true,
+      "skippable": false,
+      "is_slot_machine": false,
+      "options": [
+        { "id": "a", "text": "不行。我必须是个什么。", "scoring": { "DECT.起": 2, "MIRR.困": 1 } },
+        { "id": "b", "text": "那也行,反正测这玩意没用", "scoring": { "COEX": 2 } },
+        { "id": "c", "text": "我笑了一下,继续刷小红书", "scoring": { "COEX": 1, "GHST.用": 1 } },
+        { "id": "d", "text": "我截了「你只是累了」那一句,发了出去", "scoring": { "COEX": 1, "MIRR.用": 1 } },
+        { "id": "e", "text": "我把这个测试拉黑了", "scoring": { "FGHT.出": 2 } },
+        { "id": "f", "text": "我哭了", "scoring": { "PHIL.困": 1, "MIRR.困": 1 } }
+      ]
+    }
+  ]
+}

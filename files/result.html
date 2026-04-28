@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>共处 · 你的卡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="container" id="result-root">
+  <div style="text-align: center; color: var(--smoke); padding: 80px 0;">载入中…</div>
+</div>
+
+<script type="module">
+import { supabase, isConfigured } from './assets/js/supabase-client.js';
+import { generateResult, formatLiveStat } from './assets/js/result-engine.js';
+import { exportShareCard } from './assets/js/share-card.js';
+
+const root = document.getElementById('result-root');
+
+async function init() {
+  const quizResultStr = sessionStorage.getItem('coexist_result');
+  if (!quizResultStr) {
+    root.innerHTML = '<p style="text-align:center; padding: 80px 0;">没有结果数据。<br><a href="index.html">回到开始</a></p>';
+    return;
+  }
+
+  const quizResult = JSON.parse(quizResultStr);
+  const user = { id: sessionStorage.getItem('coexist_user_id'), visit_count: 1 };
+
+  // 加载卡片数据
+  const cardData = await fetch('./assets/data/cards.json').then(r => r.json());
+
+  // 生成结果
+  const result = await generateResult(quizResult, user);
+  const card = cardData.main[result.mainCard] || cardData.main['COEX'];
+
+  renderCard(result, card, cardData);
+
+  // 实时订阅卡片统计
+  if (isConfigured) {
+    supabase.channel('card_realtime')
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'card_stats',
+        filter: `card_id=eq.${result.mainCard}`
+      }, (payload) => {
+        const el = document.getElementById('live-stat');
+        if (el && payload.new) {
+          el.textContent = formatLiveStat(card.name, payload.new.today_count, payload.new.today_count);
+        }
+      })
+      .subscribe();
+  }
+}
+
+function renderCard(result, card, cardData) {
+  const hiddenList = (result.hiddenCards || []).map(code => {
+    const h = cardData.hidden[code];
+    if (!h) return '';
+    return `<div class="hidden-card"><span class="code">${code}</span>${h.name}</div>`;
+  }).filter(Boolean).join('');
+
+  const variantHtml = result.variantCard
+    ? `<div class="rarity" style="margin-bottom: 16px;">变体:${result.variantCard}</div>`
+    : '';
+
+  root.innerHTML = `
+    <header class="topbar">
+      <span>${card.code}</span>
+      <span>DM LOGIC</span>
+    </header>
+
+    <div id="share-canvas" style="background: var(--paper); padding: 24px 0;">
+      <div class="topbar" style="margin-bottom: 48px;">
+        <span>${card.code}</span>
+        <span>SIG · ${result.signature}</span>
+      </div>
+
+      <h1 class="title-zh">${card.name}</h1>
+      <div class="title-en">${card.name_en}</div>
+
+      <div class="subtitle">${card.subtitle}</div>
+
+      <div class="body">${card.body}</div>
+
+      <div class="hairline"></div>
+
+      <div class="kicker">${card.kicker}</div>
+
+      <div class="hairline"></div>
+
+      <div class="live-stat" id="live-stat">
+        ${formatLiveStat(card.name, result.todayCount, result.todayRank)}
+      </div>
+
+      <div class="rarity">稀有度 · ${result.rarity}%</div>
+      ${variantHtml}
+
+      ${hiddenList ? `
+        <div class="hidden-section">
+          <div class="rarity" style="margin-bottom: 12px;">解锁隐藏卡</div>
+          ${hiddenList}
+        </div>
+      ` : ''}
+
+      <div class="byline">
+        <span>共处 · COEXIST</span>
+        <span>dmlogic.ca</span>
+      </div>
+    </div>
+
+    <div class="action-row" style="margin-top: 32px;">
+      <a href="collection.html" class="btn-ghost">看卡册</a>
+      <button class="btn" id="btn-share">截图保存 →</button>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; gap: 24px; justify-content: center;">
+      <a href="quiz.html" class="btn-ghost">再做一次</a>
+      <a href="index.html" class="btn-ghost">回首页</a>
+    </div>
+  `;
+
+  document.getElementById('btn-share').addEventListener('click', () => {
+    exportShareCard('#share-canvas', `coexist-${card.code}-${result.signature}.png`);
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
