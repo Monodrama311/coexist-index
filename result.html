@@ -20,6 +20,7 @@
 import { supabase, isConfigured } from './assets/js/supabase-client.js';
 import { generateResult, formatLiveStat } from './assets/js/result-engine.js';
 import { exportShareCard } from './assets/js/share-card.js';
+import { holo, holoFreeze } from './assets/js/holo.js';
 
 const root = document.getElementById('result-root');
 
@@ -135,9 +136,17 @@ function renderCard(result, card, cardData) {
     </div>
   `;
 
-  document.getElementById('btn-share').addEventListener('click', () => {
-    exportShareCard('#share-canvas', `coexist-${card.code}-${result.signature}.png`);
+  document.getElementById('btn-share').addEventListener('click', async () => {
+    const el = document.getElementById('share-canvas');
+    const restore = holoFreeze(el);           // never let the tilt skew the PNG
+    try { await exportShareCard('#share-canvas', `coexist-${card.code}-${result.signature}.png`); }
+    finally { restore(); }
   });
+
+  /* 箔面 — 稀有结果和带隐藏卡的结果,卡面会跟着指尖走光。普卡不发光。 */
+  const isRare = (typeof result.rarity === 'number' && result.rarity <= 15)
+    || (result.hiddenCards || []).length > 0;
+  if (isRare) holo(document.getElementById('share-canvas'), { tiltX: 3, tiltY: 4 });
 }
 
 init();

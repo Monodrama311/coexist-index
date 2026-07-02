@@ -46,6 +46,7 @@
 
 <script type="module">
 import { getOrCreateUser } from './assets/js/fingerprint.js';
+import { holo } from './assets/js/holo.js';
 
 async function init() {
   const user = await getOrCreateUser();
@@ -75,12 +76,17 @@ async function init() {
     const isUnlocked = hidden.includes(id);
     const card = cardData.hidden[id];
     return `
-      <div class="card-slot ${isUnlocked ? 'unlocked' : 'locked'}">
+      <div class="card-slot ${isUnlocked ? 'unlocked' : 'locked'}${isUnlocked && card.rare ? ' rare' : ''}">
         <div class="card-id">${id}</div>
         <div class="card-name">${isUnlocked ? card.name : '???'}</div>
       </div>
     `;
   }).join('');
+
+  /* 箔面 — 解锁的隐藏卡在指尖下走光;稀有卡倾角更大。锁着的不发光。 */
+  document.querySelectorAll('#hidden-grid .card-slot.unlocked').forEach(el => {
+    holo(el, el.classList.contains('rare') ? { tiltX: 7, tiltY: 9 } : { tiltX: 5, tiltY: 7 });
+  });
 }
 
 init();
