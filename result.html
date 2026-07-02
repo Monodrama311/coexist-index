@@ -71,6 +71,13 @@ function renderCard(result, card, cardData) {
     ? `<div class="rarity" style="margin-bottom: 16px;">变体:${result.variantCard}</div>`
     : '';
 
+  // 底稿 — 每张卡背后的心理学锚点。写在档案里,不写在脸上。
+  const anchorHtml = card.psych_anchor
+    ? `<div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .06em; color: var(--smoke); margin-top: 10px;">底稿 · ${card.psych_anchor}</div>`
+    : '';
+
+  const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+
   root.innerHTML = `
     <header class="topbar">
       <span>${card.code}</span>
@@ -93,6 +100,7 @@ function renderCard(result, card, cardData) {
       <div class="hairline"></div>
 
       <div class="kicker">${card.kicker}</div>
+      ${anchorHtml}
 
       <div class="hairline"></div>
 
@@ -112,7 +120,7 @@ function renderCard(result, card, cardData) {
 
       <div class="byline">
         <span>共处 · COEXIST</span>
-        <span>dmlogic.ca</span>
+        <span>留档 ${dateStr} · coexist.dmlogic.ca</span>
       </div>
     </div>
 
