@@ -398,34 +398,34 @@
       "id": "Q24",
       "school": "不相及",
       "scene": "共享单车没电 / LOOP 触发",
-      "story": "倒数第二题。\n\n你做完这测试,大概率会做什么?",
+      "story": "扫开一辆共享单车,骑了两百米,它没电了。我推着它站在路边。这是今天第二辆没电的。\n\n我接下来:",
       "multi_select": true,
       "skippable": false,
       "is_slot_machine": false,
       "options": [
-        { "id": "a", "text": "截图发朋友圈,配文「太准了」", "scoring": { "MIRR.困": 2 } },
-        { "id": "b", "text": "发到我和闺蜜群,等她分析", "scoring": { "DECT.起": 2 } },
-        { "id": "c", "text": "默默看完,关掉,不发", "scoring": { "GHST.起": 2 } },
-        { "id": "d", "text": "我不发。我去把这测试再做一遍。", "scoring": {}, "trigger": "LOOP" },
-        { "id": "e", "text": "我会发,但是发了以后我会盯着看谁点赞", "scoring": { "MIRR.困": 2, "DECT.用": 1 } },
-        { "id": "f", "text": "我会把这测试推给一个我觉得有问题的朋友", "scoring": { "DECT.用": 2, "FGHT.用": 1 } }
+        { "id": "a", "text": "再扫旁边那一辆——不信这一整条街都没电", "scoring": {}, "trigger": "LOOP" },
+        { "id": "b", "text": "算了,走路,反正也快到了", "scoring": { "GHST.出": 2 } },
+        { "id": "c", "text": "站在原地,先给它拍张照报个故障", "scoring": { "DECT.用": 2 } },
+        { "id": "d", "text": "在心里把这辆车、这个牌子、这条街都骂了一遍", "scoring": { "FGHT.起": 2 } },
+        { "id": "e", "text": "退了钱,但那两百米的骑行费我盯着看它到底退没退", "scoring": { "MIRR.困": 2, "DECT.用": 1 } },
+        { "id": "f", "text": "推着它又走了一段才停下,好像它还能骑", "scoring": { "PHIL.用": 1, "COEX": 1 } }
       ]
     },
     {
       "id": "Q25",
       "school": "新世相",
       "scene": "回家路上不想上楼 / 收尾",
-      "story": "最后一题。\n\n假设这个测试的结果是——你不是任何一种人格。你只是累了。\n\n你的反应?",
+      "story": "最后一题。\n\n到楼下了。我没上去。在楼梯间、或者车里、或者小区那张长椅上,又坐了一会儿。\n\n这一会儿,我:",
       "multi_select": true,
       "skippable": false,
       "is_slot_machine": false,
       "options": [
-        { "id": "a", "text": "不行。我必须是个什么。", "scoring": { "DECT.起": 2, "MIRR.困": 1 } },
-        { "id": "b", "text": "那也行,反正测这玩意没用", "scoring": { "COEX": 2 } },
-        { "id": "c", "text": "我笑了一下,继续刷小红书", "scoring": { "COEX": 1, "GHST.用": 1 } },
-        { "id": "d", "text": "我截了「你只是累了」那一句,发了出去", "scoring": { "COEX": 1, "MIRR.用": 1 } },
-        { "id": "e", "text": "我把这个测试拉黑了", "scoring": { "FGHT.出": 2 } },
-        { "id": "f", "text": "我哭了", "scoring": { "PHIL.困": 1, "MIRR.困": 1 } }
+        { "id": "a", "text": "刷手机,顺手把刚才那些题又想了一遍——我到底算哪种", "scoring": { "DECT.起": 2, "MIRR.困": 1 } },
+        { "id": "b", "text": "什么也没想,就是不想动", "scoring": { "COEX": 2 } },
+        { "id": "c", "text": "有一道题,我刚才没敢选那个真的答案", "scoring": { "PHIL.困": 2 } },
+        { "id": "d", "text": "给一个人写了条消息,写完没发,删了", "scoring": { "MIRR.出": 1, "GHST.困": 1 } },
+        { "id": "e", "text": "坐够了,起身,该上还得上", "scoring": { "GHST.用": 1, "COEX": 1 } },
+        { "id": "f", "text": "其实我知道上去也还是这样。但还是得上去。", "scoring": { "PHIL.出": 2 } }
       ]
     }
   ]
