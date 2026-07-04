@@ -1,15 +1,26 @@
 /* ==============================
    共处 · Coexist 设计 tokens
+   v2 — warm graded paper, texture, lifted contrast (de-ash)
+   Same variable + class names as before; richer values.
    ============================== */
 
 :root {
-  /* 颜色 */
-  --paper: #F6F1EB;
-  --ink: #2C2825;
-  --signal: #B8845A;
-  --mist: #E8E2D8;
-  --smoke: #8B8278;
-  --hairline: rgba(44, 40, 37, 0.08);
+  /* 颜色 — warmer, higher contrast, a real accent */
+  --paper: #EFE7DB;          /* base cream (body uses a graded fill below) */
+  --paper-hi: #F5EFE6;       /* lit top of the page */
+  --paper-lo: #E4DACB;       /* settled bottom */
+  --ink: #241F1B;            /* darker, more legible than #2C2825 */
+  --ink-soft: #3A342E;
+  --signal: #B26A45;         /* terracotta, a touch deeper so it reads */
+  --signal-soft: rgba(178, 106, 69, 0.10);
+  --mist: #E1D7C8;
+  --smoke: #6E655A;          /* was #8B8278 — lifted for legibility */
+  --faint: #9A9083;
+  --hairline: rgba(36, 31, 27, 0.14);   /* was 0.08 — now visible */
+  --card: #F7F1E8;           /* raised warm surface for options/slots */
+  --card-hi: #FBF6EF;
+  --shadow: 0 1px 2px rgba(36,31,27,.05), 0 6px 20px rgba(36,31,27,.06);
+  --shadow-lift: 0 2px 4px rgba(36,31,27,.07), 0 12px 32px rgba(36,31,27,.10);
 
   /* 字体 */
   --serif: 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', serif;
@@ -39,11 +50,12 @@
   --ls-zh: 0.04em;
 
   /* 容器 */
-  --max-w: 540px;
+  --max-w: 560px;
 
   /* 动画 */
   --t-quick: 180ms ease;
   --t-smooth: 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -55,7 +67,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--paper);
   color: var(--ink);
   font-family: var(--serif);
   font-size: var(--fs-body);
@@ -65,7 +76,37 @@ html, body {
 
 body {
   min-height: 100vh;
+  position: relative;
+  /* graded paper — lit at the top, settling darker toward the foot */
+  background:
+    radial-gradient(120% 80% at 50% -8%, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
+  background-attachment: fixed;
 }
+
+/* film grain — the single biggest de-ash move; a faint tooth over the paper */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* vignette — settles the edges so the page has a center of gravity */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 100% at 50% 40%, transparent 55%, rgba(60, 44, 30, 0.07) 100%);
+}
+
+/* keep real content above the texture layers */
+.container { position: relative; z-index: 1; }
 
 a {
   color: inherit;
@@ -73,22 +114,14 @@ a {
   border-bottom: 1px solid var(--hairline);
   transition: border-color var(--t-quick);
 }
+a:hover { border-color: var(--signal); }
 
-a:hover {
-  border-color: var(--signal);
-}
+button { font-family: var(--mono); background: none; border: none; cursor: pointer; color: inherit; }
 
-button {
-  font-family: var(--mono);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-}
+::selection { background: var(--signal); color: var(--paper-hi); }
 
-::selection {
-  background: var(--signal);
-  color: var(--paper);
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
 
 .mono { font-family: var(--mono); letter-spacing: var(--ls-mono); font-size: var(--fs-mono); color: var(--smoke); }
