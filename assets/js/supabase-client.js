@@ -4,7 +4,7 @@
 // 底下改成打自建的 Cloudflare Worker + D1。其余文件一行都不用改。
 //
 // 部署完 Worker 后,把它的地址粘到下面这一行 —— 只需改这一处:
-const API = '';   // 例:'https://coexist-api.你的子域.workers.dev'  (留空 = 继续跑 mock,不影响线上)
+const API = 'https://coexist-api.waterloony.workers.dev';   // 已部署 · 留空则回退 mock
 
 export const isConfigured = !!API;
 
