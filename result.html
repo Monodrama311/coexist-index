@@ -20,7 +20,6 @@
 import { supabase, isConfigured } from './assets/js/supabase-client.js';
 import { generateResult, formatLiveStat } from './assets/js/result-engine.js';
 import { exportShareCard } from './assets/js/share-card.js';
-import { holo, holoFreeze } from './assets/js/holo.js';
 
 const root = document.getElementById('result-root');
 
@@ -39,7 +38,10 @@ async function init() {
 
   // 生成结果
   const result = await generateResult(quizResult, user);
-  const card = cardData.main[result.mainCard] || cardData.main['COEX'];
+
+  // 混轴优先:强副轴且牌库里有这张 主×暗 混轴卡时,用它顶替纯卡显示(计数仍走 mainCard)
+  const hybridCard = (result.hybridKey && cardData.hybrid) ? cardData.hybrid[result.hybridKey] : null;
+  const card = hybridCard || cardData.main[result.mainCard] || cardData.main['COEX'];
 
   renderCard(result, card, cardData);
 
@@ -68,16 +70,11 @@ function renderCard(result, card, cardData) {
     return `<div class="hidden-card"><span class="code">${code}</span>${h.name}</div>`;
   }).filter(Boolean).join('');
 
-  const variantHtml = result.variantCard
+  // 混轴本身就是"变体成了正卡",不再另外显示"变体:"文字
+  const isHybrid = !!(card.code && card.code.includes('×'));
+  const variantHtml = (!isHybrid && result.variantCard)
     ? `<div class="rarity" style="margin-bottom: 16px;">变体:${result.variantCard}</div>`
     : '';
-
-  // 底稿 — 每张卡背后的心理学锚点。写在档案里,不写在脸上。
-  const anchorHtml = card.psych_anchor
-    ? `<div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .06em; color: var(--smoke); margin-top: 10px;">底稿 · ${card.psych_anchor}</div>`
-    : '';
-
-  const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
 
   root.innerHTML = `
     <header class="topbar">
@@ -101,7 +98,6 @@ function renderCard(result, card, cardData) {
       <div class="hairline"></div>
 
       <div class="kicker">${card.kicker}</div>
-      ${anchorHtml}
 
       <div class="hairline"></div>
 
@@ -121,7 +117,7 @@ function renderCard(result, card, cardData) {
 
       <div class="byline">
         <span>共处 · COEXIST</span>
-        <span>留档 ${dateStr} · coexist.dmlogic.ca</span>
+        <span>dmlogic.ca</span>
       </div>
     </div>
 
@@ -136,17 +132,9 @@ function renderCard(result, card, cardData) {
     </div>
   `;
 
-  document.getElementById('btn-share').addEventListener('click', async () => {
-    const el = document.getElementById('share-canvas');
-    const restore = holoFreeze(el);           // never let the tilt skew the PNG
-    try { await exportShareCard('#share-canvas', `coexist-${card.code}-${result.signature}.png`); }
-    finally { restore(); }
+  document.getElementById('btn-share').addEventListener('click', () => {
+    exportShareCard('#share-canvas', `coexist-${card.code}-${result.signature}.png`);
   });
-
-  /* 箔面 — 稀有结果和带隐藏卡的结果,卡面会跟着指尖走光。普卡不发光。 */
-  const isRare = (typeof result.rarity === 'number' && result.rarity <= 15)
-    || (result.hiddenCards || []).length > 0;
-  if (isRare) holo(document.getElementById('share-canvas'), { tiltX: 3, tiltY: 4 });
 }
 
 init();
