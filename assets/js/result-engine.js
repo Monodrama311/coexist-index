@@ -15,6 +15,7 @@ export async function generateResult(quizResult, user) {
   };
   const sortedAxes = Object.entries(axes).sort((a, b) => b[1] - a[1]);
   const mainAxis = sortedAxes[0][0];
+  const shadowAxis = sortedAxes[1] ? sortedAxes[1][0] : null;
   const totalScore = Object.values(axes).reduce((a, b) => a + b, 0);
 
   // 2. COEX 兜底
@@ -35,6 +36,13 @@ export async function generateResult(quizResult, user) {
   const subRatio = sortedAxes[0][1] > 0 ? sortedAxes[1][1] / sortedAxes[0][1] : 0;
   const variantCard = (subRatio > 0.6 && !isCoex)
     ? `${mainCard}×${sortedAxes[1][0]}.${state}`
+    : null;
+
+  // 4b. 混轴路由 —— 强副轴时,若 cards.json 里存在这个 主×暗 的混轴卡,result.html 会用它顶替纯卡显示。
+  //     这里只给出候选 key(主_暗);是否存在由 result.html 查 cardData.hybrid 决定,自动随牌库扩张。
+  //     计数/稀有度仍走 mainCard(纯卡),不动线上数据库。
+  const hybridKey = (subRatio > 0.6 && !isCoex && shadowAxis)
+    ? `${mainAxis}_${shadowAxis}`
     : null;
 
   // 5. 隐藏卡
@@ -90,6 +98,7 @@ export async function generateResult(quizResult, user) {
 
   return {
     mainCard,
+    hybridKey,
     variantCard,
     hiddenCards,
     signature,
